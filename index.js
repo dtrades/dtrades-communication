@@ -65,7 +65,7 @@ function encrypt(private_key, public_key, message, maxsize = 256) {
     const buff = Aes.encrypt(private_key, public_key, message);
     const str = serialize(buff);
 
-    if (maxsize !== -1 && str.length > 256) throw new Error(`error: message too long (max ${maxsize} chars)`);
+    if (maxsize !== -1 && str.length > maxsize) throw new Error(`error: message too long (max ${maxsize} chars)`);
 
     return str;
 }
