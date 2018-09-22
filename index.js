@@ -55,16 +55,17 @@ function deserialize(message) {
  * @param {string} private_key EOSIO Private Key
  * @param {string} public_key EOSIO Public Key
  * @param {string} message Message to Encrypt
+ * @param {number} [maxsize=256] Maximum character message size
  * @returns {string} Encrypted Message
  * @example
  *
  * const encrypted = encrypt(private_key, public_key, message);
  */
-function encrypt(private_key, public_key, message) {
+function encrypt(private_key, public_key, message, maxsize = 256) {
     const buff = Aes.encrypt(private_key, public_key, message);
     const str = serialize(buff);
 
-    if (str.length > 256) throw new Error("error: message too long (max 256 chars)");
+    if (maxsize !== -1 && str.length > 256) throw new Error(`error: message too long (max ${maxsize} chars)`);
 
     return str;
 }
