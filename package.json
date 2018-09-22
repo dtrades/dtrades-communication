@@ -1,10 +1,14 @@
 {
-  "name": "eos-communication",
+  "name": "eos-communication-lib",
   "version": "0.2.0",
   "description": "Allows communication on the EOS blockchain using AES shared key encryption mechanism",
   "main": "index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/dtrades/eos-communication",
+  "homepage": "https://github.com/dtrades/eos-communication-lib",
+  "files": [
+    "index.js",
+    "index.d.ts"
+  ],
   "scripts": {
     "test": "node test.js",
     "docs": "documentation readme index.js --section=API"

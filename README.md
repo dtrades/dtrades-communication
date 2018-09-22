@@ -11,13 +11,13 @@ This module uses `eosjs-ecc` to perform the required cryptographic operations.
 **npm**
 
 ```bash
-$ npm install --save eos-communication
+$ npm install --save eos-communication-lib
 ```
 
 ## Usage
 
 ```js
-import { encrypt, decrypt } from 'eos-communication';
+import { encrypt, decrypt } from 'eos-communication-lib';
 
 const public_key = "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV";
 const private_key = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3";
