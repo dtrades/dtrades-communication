@@ -1,4 +1,4 @@
-# EOS Communication
+# EOS Communication Library
 
 This library allows to encrypt messages on the EOS platform, using the AES shared key encryption algorithm.
 
