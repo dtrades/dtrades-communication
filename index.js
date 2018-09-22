@@ -1,61 +1,93 @@
-function serialize(buff){
+const { Aes } = require("eosjs-ecc");
+const { Long } = require('bytebuffer');
 
-	var str = "TO DECRYPT: msg.eostitan.com\n";
+/**
+ * Serialize
+ *
+ * @private
+ * @param {Crypt} buff Aes.encrypt => Object
+ * @returns {string} Serialized String
+ * @example
+ *
+ * const buff = Aes.encrypt(private_key, public_key, message);
+ * const str = serialize(buff);
+ */
+function serialize(buff) {
+    let str = "TO DECRYPT: eos-communication\n";
 
 	str += buff.nonce.low.toString().padStart(11, ".");
 	str += buff.nonce.high.toString().padStart(11, ".");
-	str += buff.checksum.toString().padStart(11, ".");
+    str += buff.checksum.toString().padStart(11, ".");
 	str += buff.message.toString('base64');
 
 	return str;
-
 }
 
-function deserialize(message){
+/**
+ * Deserialize
+ *
+ * @private
+ * @param {string} message Message
+ * @returns {Object} Deserialize Object
+ * @example
+ *
+ * const { nonce, content, checksum } = deserialize(message);
+ * const decrypted = Aes.decrypt(private_key, public_key, nonce, content, checksum);
+ */
+function deserialize(message) {
+    message = message.replace("TO DECRYPT: eos-communication\n", "");
 
-	message = message.replace("TO DECRYPT: msg.eostitan.com\n", "");
+    const low = parseInt(message.substring(0, 11).replace(/[.]/g, ""));
+    const high = parseInt(message.substring(11, 22).replace(/[.]/g, ""));
+    const checksum = parseInt(message.substring(22, 33).replace(/[.]/g, ""));
+    message = message.substring(33, message.length);
 
-	var low = parseInt(message.substring(0, 11).replace(/[.]/g, ""));
-	var high = parseInt(message.substring(11, 22).replace(/[.]/g, ""));
-	var checksum = parseInt(message.substring(22, 33).replace(/[.]/g, ""));
-	var message = message.substring(33, message.length);
-
-	var obj = {
-		nonce: new Long(low, high, 0),
-		checksum: checksum,
-		content: Buffer.from(message, "base64")
-	}
-
-	return obj;
-
+    return {
+        nonce: new Long(low, high, 0),
+        checksum,
+        content: Buffer.from(message, "base64")
+    };
 }
 
-exports.encrypt = function(fromAcct, toAcct, message){
-	let perm = acct.permissions.find(function(p){return p.perm_name=="active"});
+/**
+ * Encrypt Message
+ *
+ * @param {string} private_key EOSIO Private Key
+ * @param {string} public_key EOSIO Public Key
+ * @param {string} message Message to Encrypt
+ * @returns {string} Encrypted Message
+ * @example
+ *
+ * const encrypted = encrypt(private_key, public_key, message);
+ */
+function encrypt(private_key, public_key, message) {
+    const buff = Aes.encrypt(private_key, public_key, message);
+    const str = serialize(buff);
 
-	if (!perm) new Error(`Couldn't find active permission for account ${toAcct}`);
-	if (perm.required_auth.threshold !=1) new Error(`Sending to multi-sig addresses is not currently supported.`);
+    if (str.length > 256) throw new Error("error: message too long (max 256 chars)");
 
-	let pubKey = perm.required_auth.keys[0].key;
-
-	let buff = eosecc.Aes.encrypt(key.priv_key, pubKey, message);
-
-	var str = serialize(buff);
-
-	if (str.length > 256) return new Error("error: message too long (max 256 chars)");
+    return str;
 }
 
-exports.decrypt = function(fromAcct, toAcct, message){
-	let perm = acct.permissions.find(function(p){return p.perm_name=="active"});
+/**
+ * Decrypt Message
+ *
+ * @param {string} private_key EOSIO Private Key
+ * @param {string} public_key EOSIO Public Key
+ * @param {string} message Encrypted Message
+ * @returns {string} Decrypted Message
+ * @example
+ *
+ * const decrypted = decrypt(private_key, public_key, message);
+ */
+function decrypt(private_key, public_key, message) {
+    const { nonce, content, checksum } = deserialize(message);
+    const decrypted = Aes.decrypt(private_key, public_key, nonce, content, checksum);
 
-	if (!perm) new Error(`Couldn't find active permission for account ${fromAcct}`);
-	if (perm.required_auth.threshold !=1) new Error(`Receiving from multi-sig addresses is not currently supported.`);
+    return decrypted.toString('utf8');
+}
 
-	let pubKey = perm.required_auth.keys[0].key;
-
-	var deserialized = deserialize(message);
-
-	let decrypted = eosecc.Aes.decrypt(key.priv_key, pubKey, deserialized.nonce, deserialized.content, deserialized.checksum);
-
-	return decrypted.toString('utf8');
+module.exports = {
+    decrypt,
+    encrypt,
 }
