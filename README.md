@@ -1,128 +1,34 @@
-![EOS TITAN](./eos_logo_white.jpg "EOS TITAN")
+# EOS Communication
 
-[https://eostitan.com](https://eostitan.com)
-
-# eos-communication
-
-This node.js module allows on-chain encrypted communication on the EOS platform, using the AES shared key encryption algorithm and the memo field in the "transfer" action to send private messages that can only be decrypted by the recipient.
-
-It combines the sender's private key and the receiver's public key (using the account's active permission) to create a public key for encryption.
+This library allows to encrypt messages on the EOS platform, using the AES shared key encryption algorithm.
 
 Decryption is achieved by combining the receiver's private key and the sender's public key to create the private key necessary to decrypt the message.
 
-This module uses eosjs and eosjs-ecc to communicate with the EOS network and to perform the required cryptographic operations.
+This module uses `eosjs-ecc` to perform the required cryptographic operations.
 
-## Configuration:
+## Install
 
-Please make sure <a href='https://nodejs.org/en/'>node.js</a> is installed on your system (tested with version 8.11.3).
-
-Clone the repository and install packages:
+**npm**
 
 ```
-git clone https://github.com/eostitan/eos-communication
-cd eos-communication
-npm install
+$ npm install --save eos-communication
 ```
 
-## Usage:
+## Usage
 
-Using constructor parameters
+```js
+import { encrypt, decrypt } from 'eos-communication';
 
-```
-const eosCommunications = require("./index.js");
+const public_key = "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV";
+const private_key = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3";
 
-const opts = {
-	network:{
-		httpEndpoint: "http://api.eostitan.com",
-		chainId: 'aca376f206b8fc25a6ed44dbdc66547c36c6c33e3a119ffbeaef943642f0e906'
-	},
-	keys:[
-		{
-			"account":  "myeosaccount", //account name
-			"priv_key": "5.....", //priv key
-			"pub_key":  "EOS...." //pub key
-		}
-	]
-}
+const message = "Private Message, shhhh!";
+const encrypted = encrypt(private_key, public_key, message);
+// => TO DECRYPT: eos-communication
+// .1167451677...23460624..862584768Q+h1AeLQbjfzZJD1Nsx6kk3U/jSNStwoWstz9uNCadw=
 
-const eosComm = new eosCommunications(opts);
+const decrypted = decrypt(private_key, public_key, encrypted);
+// => Private Message, shhhh!
 ```
 
-## Functions:
-
-### .send : encrypt and send a message in the memo field of a transfer
-
-fromAcct: account you want to send the message from
-
-toAcct: account to which you want to send the message to
-
-message: the message to be encrypted
-
-amount: amount of the transfer (default 0.0001)
-
-
-```
-eosComm.send(fromAcct, toAcct, message, amount)
-	.then(result=>{
-		console.log(result);
-	})
-	.catch(err=>{
-		console.log("error sending message:", err);
-	});
-```
-
-### .scanForMessages : scan a block for any messages addressed to one of your accounts
-
-block_num_or_id: number or hash of block to scan for messages
-
-amount: minimum amount required to include message in results (default 0.0001)
-
-```
-eosComm.scanForMessages(block_num_or_id, amount)
-	.then(result=>{
-		console.log(result);
-	})
-	.catch(err=>{
-		console.log("error retrieving messages:", err);
-	});
-```
-
-## Testing
-
-### .encrypt : encrypt a message without sending it
-
-fromAcct: account you want to send the message from
-
-toAcct: account to which you want to send the message to
-
-message: the message to be encrypted
-
-```
-eosComm.encrypt(fromAcct, toAcct, message)
-	.then(encryptedRes=>{
-		console.log(encryptedRes);
-	})
-	.catch(err=>{
-		console.log("encryption error:", err);
-	});
-```
-
-### .decrypt : decrypt an encrypted message
-
-fromAcct: account from which you received the message
-
-toAcct: account with which you received a message
-
-message: the message to be decrypted
-
-```
-eosComm.decrypt(fromAcct, toAcct, message)
-	.then(decryptedRes=>{
-		console.log(decryptedRes);
-	})
-	.catch(err=>{
-		console.log("decryption error:", err);
-	});
-```
-
-For full example, see <a href='https://github.com/eostitan/eos-communication/blob/master/example.js'>example.js</a>
+## API

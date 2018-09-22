@@ -1,22 +1,32 @@
 {
   "name": "eos-communication",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Allows communication on the EOS blockchain using AES shared key encryption mechanism",
   "main": "index.js",
-  "homepage": "https://github.com/eostitan/eos-communication",
+  "types": "index.d.ts",
+  "homepage": "https://github.com/dtrades/eos-communication",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "node test.js",
+    "docs": "documentation readme index.js --section=API"
   },
   "author": {
     "name":"Guillaume Babin-Tremblay",
     "email" : "guillaume@eostitan.com",
     "url" : "http://eostitan.com"
   },
+  "contributors": [
+    {
+      "name": "Denis Carriere",
+      "email": "denis@eosnation.io",
+      "url": "https://eosnation.io"
+    }
+  ],
   "license": "MIT",
   "dependencies": {
-    "dotenv": "*",
-    "eosjs": "15.0.3",
-    "eosjs-ecc": "4.0.1",
-    "long": "3.2.0"
+    "eosjs-ecc": "4.x"
+  },
+  "devDependencies": {
+    "tape": "*",
+    "documentation": "*"
   }
 }
