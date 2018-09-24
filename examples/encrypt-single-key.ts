@@ -1,4 +1,4 @@
-import { encrypt, decrypt } from '..';
+import { decrypt, encrypt } from "../";
 
 // Encrypt Message with Self
 const message = "Private Message, shhhh!";

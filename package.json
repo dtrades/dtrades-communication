@@ -10,7 +10,7 @@
     "index.d.ts"
   ],
   "scripts": {
-    "test": "node test.js",
+    "test": "tsc && ava",
     "docs": "documentation readme index.js --section=API"
   },
   "author": {
@@ -31,8 +31,8 @@
   },
   "devDependencies": {
     "@types/node": "*",
+    "ava": "*",
     "documentation": "*",
-    "tape": "*",
     "tslint": "*",
     "typescript": "*"
   }

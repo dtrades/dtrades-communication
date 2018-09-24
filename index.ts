@@ -2,9 +2,9 @@ const { Aes } = require("eosjs-ecc");
 const { Long } = require("bytebuffer");
 
 export interface Crypt {
-    nonce: any
-    message: Buffer
-    checksum: Buffer | string
+    nonce: any;
+    message: Buffer;
+    checksum: Buffer | string;
 }
 
 /**
@@ -23,7 +23,7 @@ export function encrypt(private_key: string, public_key: string, message: string
     const buff = Aes.encrypt(private_key, public_key, message);
     const str = serialize(buff);
 
-    if (maxsize !== -1 && str.length > maxsize) throw new Error(`error: message too long (max ${maxsize} chars)`);
+    if (maxsize !== -1 && str.length > maxsize) { throw new Error(`error: message too long (max ${maxsize} chars)`); }
 
     return str;
 }
@@ -43,9 +43,8 @@ export function decrypt(private_key: string, public_key: string, message: string
     const { nonce, content, checksum } = deserialize(message);
     const decrypted = Aes.decrypt(private_key, public_key, nonce, content, checksum);
 
-    return decrypted.toString('utf8');
+    return decrypted.toString("utf8");
 }
-
 
 /**
  * Serialize
@@ -61,12 +60,12 @@ export function decrypt(private_key: string, public_key: string, message: string
 export function serialize(buff: Crypt) {
     let str = "TO DECRYPT: eos-communication\n";
 
-	str += buff.nonce.low.toString().padStart(11, ".");
-	str += buff.nonce.high.toString().padStart(11, ".");
+    str += buff.nonce.low.toString().padStart(11, ".");
+    str += buff.nonce.high.toString().padStart(11, ".");
     str += buff.checksum.toString().padStart(11, ".");
-	str += buff.message.toString('base64');
+    str += buff.message.toString("base64");
 
-	return str;
+    return str;
 }
 
 /**
@@ -89,8 +88,8 @@ export function deserialize(message: string) {
     message = message.substring(33, message.length);
 
     return {
-        nonce: new Long(low, high, 0),
         checksum,
-        content: Buffer.from(message, "base64")
+        content: Buffer.from(message, "base64"),
+        nonce: new Long(low, high, 0),
     };
 }
