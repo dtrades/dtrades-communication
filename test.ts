@@ -1,5 +1,5 @@
 import test from "ava";
-import { decrypt, encrypt } from ".";
+import { decrypt, deserialize, encrypt } from ".";
 
 // variables
 const message = "Private Message, shhhh!";
@@ -15,7 +15,10 @@ XXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXXX
 
 test("encrypt", (t) => {
     const encrypted = encrypt(private_key, public_key, message);
-    t.is(encrypted, messageEncrypted);
+    const deserialized = deserialize(encrypted);
+    t.truthy(deserialized.nonce);
+    t.truthy(deserialized.checksum);
+    t.truthy(deserialized.content);
 });
 
 test("decrypt", (t) => {

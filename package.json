@@ -30,6 +30,7 @@
     "eosjs-ecc": "4.x"
   },
   "devDependencies": {
+    "@types/long": "*",
     "@types/node": "*",
     "ava": "*",
     "documentation": "*",

@@ -1,8 +1,8 @@
 const { Aes } = require("eosjs-ecc");
-const { Long } = require("bytebuffer");
+import Long from "long";
 
 export interface Crypt {
-    nonce: any;
+    nonce: Long;
     message: Buffer;
     checksum: Buffer | string;
 }
@@ -82,14 +82,14 @@ export function serialize(buff: Crypt) {
 export function deserialize(message: string) {
     message = message.replace("TO DECRYPT: eos-communication\n", "");
 
-    const low = parseInt(message.substring(0, 11).replace(/[.]/g, ""));
-    const high = parseInt(message.substring(11, 22).replace(/[.]/g, ""));
-    const checksum = parseInt(message.substring(22, 33).replace(/[.]/g, ""));
+    const low = parseInt(message.substring(0, 11).replace(/[.]/g, ""), 10);
+    const high = parseInt(message.substring(11, 22).replace(/[.]/g, ""), 10);
+    const checksum = parseInt(message.substring(22, 33).replace(/[.]/g, ""), 10);
     message = message.substring(33, message.length);
 
     return {
         checksum,
         content: Buffer.from(message, "base64"),
-        nonce: new Long(low, high, 0),
+        nonce: new Long(low, high, false),
     };
 }
