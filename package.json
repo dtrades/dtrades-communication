@@ -14,9 +14,9 @@
     "docs": "documentation readme index.js --section=API"
   },
   "author": {
-    "name":"Guillaume Babin-Tremblay",
-    "email" : "guillaume@eostitan.com",
-    "url" : "http://eostitan.com"
+    "name": "Guillaume Babin-Tremblay",
+    "email": "guillaume@eostitan.com",
+    "url": "http://eostitan.com"
   },
   "contributors": [
     {
@@ -30,7 +30,10 @@
     "eosjs-ecc": "4.x"
   },
   "devDependencies": {
+    "@types/node": "*",
+    "documentation": "*",
     "tape": "*",
-    "documentation": "*"
+    "tslint": "*",
+    "typescript": "*"
   }
 }
