@@ -1,4 +1,4 @@
-const { Aes } = require("eosjs-ecc");
+const Aes = require("eosjs-ecc").Aes;
 import Long from "long";
 
 export interface Crypt {

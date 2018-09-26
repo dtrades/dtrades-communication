@@ -1,6 +1,6 @@
-# EOS Communication Library
+# EOS Encrypt
 
-This library allows to encrypt messages on the EOS platform, using the AES shared key encryption algorithm.
+Allows to encrypt & decypt a message with an EOS key pair using AES shared key encryption mechanism.
 
 Decryption is achieved by combining the receiver's private key and the sender's public key to create the private key necessary to decrypt the message.
 
@@ -11,13 +11,13 @@ This module uses `eosjs-ecc` to perform the required cryptographic operations.
 **npm**
 
 ```bash
-$ npm install --save eos-communication-lib
+$ npm install --save eos-encrypt
 ```
 
 ## Usage
 
 ```js
-import { encrypt, decrypt } from 'eos-communication-lib';
+import { encrypt, decrypt } from 'eos-encrypt';
 
 const public_key = "EOS6MRyAjQq8ud7hVNYcfnVPJqcVpscN5So8BhtHuGYqET5GDW5CV";
 const private_key = "5KQwrPbwdL6PhXujxW37FSSQZ1JiwsST4cqQzDeyXtP79zkvFD3";

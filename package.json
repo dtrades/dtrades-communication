@@ -1,10 +1,10 @@
 {
-  "name": "eos-communication-lib",
+  "name": "eos-encrypt",
   "version": "0.2.1",
-  "description": "Allows communication on the EOS blockchain using AES shared key encryption mechanism",
+  "description": "Allows to encrypt & decypt a message with an EOS key pair using AES shared key encryption mechanism.",
   "main": "index.js",
   "types": "index.d.ts",
-  "homepage": "https://github.com/dtrades/eos-communication-lib",
+  "homepage": "https://github.com/eos-nation/eos-encrypt",
   "files": [
     "index.js",
     "index.d.ts"
@@ -14,15 +14,20 @@
     "docs": "documentation readme index.js --section=API"
   },
   "author": {
-    "name": "Guillaume Babin-Tremblay",
-    "email": "guillaume@eostitan.com",
-    "url": "http://eostitan.com"
+    "name": "Denis Carriere",
+    "email": "denis@eosnation.io",
+    "url": "https://eosnation.io"
   },
   "contributors": [
     {
       "name": "Denis Carriere",
       "email": "denis@eosnation.io",
       "url": "https://eosnation.io"
+    },
+    {
+      "name": "Guillaume Babin-Tremblay",
+      "email": "guillaume@eostitan.com",
+      "url": "http://eostitan.com"
     }
   ],
   "license": "MIT",
