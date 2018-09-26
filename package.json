@@ -7,16 +7,13 @@
   "homepage": "https://github.com/eos-nation/eos-encrypt",
   "files": [
     "index.js",
-    "index.d.ts"
+    "index.d.ts",
+    "types"
   ],
   "scripts": {
+    "prepare": "rm index.d.ts && tsc -d",
     "test": "tsc && ava",
     "docs": "documentation readme index.js --section=API"
-  },
-  "author": {
-    "name": "Denis Carriere",
-    "email": "denis@eosnation.io",
-    "url": "https://eosnation.io"
   },
   "contributors": [
     {
@@ -32,9 +29,11 @@
   ],
   "license": "MIT",
   "dependencies": {
-    "eosjs-ecc": "4.x"
+    "eosjs-ecc": "4.x",
+    "lodash.padstart": "*"
   },
   "devDependencies": {
+    "@types/lodash.padstart": "*",
     "@types/long": "*",
     "@types/node": "*",
     "ava": "*",

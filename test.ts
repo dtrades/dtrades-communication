@@ -1,5 +1,5 @@
 import test from "ava";
-import { decrypt, deserialize, encrypt } from ".";
+import { decrypt, deserialize, encrypt, setMemo } from ".";
 
 // variables
 const message = "Private Message, shhhh!";
@@ -36,4 +36,11 @@ test("errors", (t) => {
     t.truthy(encrypt(private_key, public_key, message_long, -1));
     t.throws(() => encrypt(private_key, public_key, message_long), "error: message too long (max 256 chars)");
     t.throws(() => encrypt(private_key, public_key, message, 5), "error: message too long (max 5 chars)");
+});
+
+test("setMemo", (t) => {
+    setMemo("foo");
+    t.regex(encrypt(private_key, public_key, message), /foo/);
+    setMemo("bar");
+    t.regex(encrypt(private_key, public_key, message), /bar/);
 });

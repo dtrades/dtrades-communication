@@ -1,11 +1,8 @@
-const Aes = require("eosjs-ecc").Aes;
+import { Aes, Crypt } from "eosjs-ecc";
+import padStart from "lodash.padstart";
 import Long from "long";
 
-export interface Crypt {
-    nonce: Long;
-    message: Buffer;
-    checksum: Buffer | string;
-}
+export let MEMO = "TO DECRYPT: eos-communication\n";
 
 /**
  * Encrypt Message
@@ -57,12 +54,12 @@ export function decrypt(private_key: string, public_key: string, message: string
  * const buff = Aes.encrypt(private_key, public_key, message);
  * const str = serialize(buff);
  */
-export function serialize(buff: Crypt) {
-    let str = "TO DECRYPT: eos-communication\n";
+export function serialize(buff: Crypt, memo = MEMO) {
+    let str = memo;
 
-    str += buff.nonce.low.toString().padStart(11, ".");
-    str += buff.nonce.high.toString().padStart(11, ".");
-    str += buff.checksum.toString().padStart(11, ".");
+    str += padStart(buff.nonce.low.toString(), 11, ".");
+    str += padStart(buff.nonce.high.toString(), 11, ".");
+    str += padStart(buff.checksum.toString(), 11, ".");
     str += buff.message.toString("base64");
 
     return str;
@@ -72,15 +69,16 @@ export function serialize(buff: Crypt) {
  * Deserialize
  *
  * @private
- * @param {string} message Message
+ * @param {string} message Message to deserialize
+ * @param {string} [memo="TO DECRYPT: eos-encrypt\n"] Memo to deserialize
  * @returns {Object} Deserialize Object
  * @example
  *
  * const { nonce, content, checksum } = deserialize(message);
  * const decrypted = Aes.decrypt(private_key, public_key, nonce, content, checksum);
  */
-export function deserialize(message: string) {
-    message = message.replace("TO DECRYPT: eos-communication\n", "");
+export function deserialize(message: string, memo = MEMO) {
+    message = message.replace(memo, "");
 
     const low = parseInt(message.substring(0, 11).replace(/[.]/g, ""), 10);
     const high = parseInt(message.substring(11, 22).replace(/[.]/g, ""), 10);
@@ -92,4 +90,17 @@ export function deserialize(message: string) {
         content: Buffer.from(message, "base64"),
         nonce: new Long(low, high, false),
     };
+}
+
+/**
+ * Set Default Memo
+ *
+ * @param {string} memo Set Memo
+ * @returns {void}
+ * @example
+ *
+ * setMemo("TO DECRYPT: my-dapp\n");
+ */
+export function setMemo(memo: string) {
+    MEMO = memo;
 }
