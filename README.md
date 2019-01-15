@@ -1,5 +1,7 @@
 # EOS Encrypt
 
+# !! THIS REPO HAS MOVED [EOS-Nation/eos-encrypt](https://github.com/EOS-Nation/eos-encrypt)
+
 Allows to encrypt & decypt a message with an EOS key pair using AES shared key encryption mechanism.
 
 Decryption is achieved by combining the receiver's private key and the sender's public key to create the private key necessary to decrypt the message.
